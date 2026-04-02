@@ -26,7 +26,7 @@ PDF / Text           (free Google AI)   (your vault)     (append-only)    │
 | [Obsidian](https://obsidian.md) vault | yes | — |
 | NotebookLM MCP server | yes | `pipx install notebooklm-mcp-cli` then `nlm login` |
 | yt-dlp | yes (for YouTube) | `brew install yt-dlp` or `pip install yt-dlp` |
-| defuddle | optional | `npm install -g @nicekate/defuddle` |
+| defuddle | optional | `npm install -g @eisen0419/defuddle` |
 | Python 3.8+ | yes (sync script) | pre-installed on macOS |
 | fswatch | optional (auto-sync) | `brew install fswatch` |
 
@@ -37,7 +37,7 @@ PDF / Text           (free Google AI)   (your vault)     (append-only)    │
 Until Revolve is available in the official marketplace, install directly:
 
 ```bash
-claude plugin marketplace add https://github.com/nicekate/revolve
+claude plugin marketplace add https://github.com/eisen0419/revolve
 claude plugin install revolve
 ```
 

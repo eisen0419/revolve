@@ -4,10 +4,10 @@
   "description": "Self-evolving AI research architecture. Research topics via NotebookLM, store in Obsidian, evolve CLAUDE.md from accumulated experience.",
   "author": {
     "name": "Eisen",
-    "url": "https://github.com/nicekate"
+    "url": "https://github.com/eisen0419"
   },
-  "homepage": "https://github.com/nicekate/revolve",
-  "repository": "https://github.com/nicekate/revolve",
+  "homepage": "https://github.com/eisen0419/revolve",
+  "repository": "https://github.com/eisen0419/revolve",
   "license": "MIT",
   "keywords": [
     "research",

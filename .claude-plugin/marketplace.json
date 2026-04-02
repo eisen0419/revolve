@@ -2,7 +2,7 @@
   "name": "revolve",
   "owner": {
     "name": "Eisen",
-    "url": "https://github.com/nicekate"
+    "url": "https://github.com/eisen0419"
   },
   "metadata": {
     "description": "Self-evolving AI research architecture for Claude Code",
@@ -14,9 +14,9 @@
       "description": "Research topics via NotebookLM, store in Obsidian, evolve CLAUDE.md from accumulated experience. Includes research pipeline, evolution, YouTube search, and setup wizard.",
       "author": {
         "name": "Eisen",
-        "url": "https://github.com/nicekate"
+        "url": "https://github.com/eisen0419"
       },
-      "homepage": "https://github.com/nicekate/revolve",
+      "homepage": "https://github.com/eisen0419/revolve",
       "tags": [
         "research",
         "self-evolving",
