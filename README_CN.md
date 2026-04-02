@@ -16,6 +16,8 @@
 [同步脚本][sync-section] •
 [配置][config-section]
 
+姊妹项目：**[Forge][forge-repo]** — CLAUDE.md 工作流入门套件
+
 [![English][lang-en-badge]][lang-en]
 [![简体中文][lang-zh-badge]][lang-zh]
 

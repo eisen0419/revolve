@@ -16,6 +16,8 @@ Research topics via NotebookLM, store in Obsidian, evolve CLAUDE.md from accumul
 [Sync Script][sync-section] •
 [Configuration][config-section]
 
+Sister project: **[Forge][forge-repo]** — CLAUDE.md workflow starter kit
+
 [![English][lang-en-badge]][lang-en]
 [![简体中文][lang-zh-badge]][lang-zh]
 
