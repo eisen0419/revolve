@@ -339,6 +339,51 @@ The core skill. Collects source material, sends it to NotebookLM for analysis, a
 
 This searches YouTube, analyzes selected videos in deep mode (~5 min), generates a slide deck, and saves everything to Obsidian.
 
+**Pipeline stages:**
+
+The research pipeline executes in 6 stages. Each stage is self-contained — if a stage fails, the error is reported immediately with a recovery suggestion.
+
+```
+Stage 0  Read config         → Load vault_path and output_dir from ~/.config/revolve/config.md
+Stage 1  Dependency check    → Verify yt-dlp (YouTube), defuddle (web, optional), NotebookLM MCP
+Stage 2  Source ingestion    → Collect data via yt-dlp / defuddle / direct text / file upload
+Stage 3  NotebookLM analysis → notebook_create → source_add → notebook_query or research_start
+Stage 4  Deliverable (opt)   → studio_create → poll studio_status → download_artifact
+Stage 5  Write to Obsidian   → Format as Markdown with frontmatter → write to vault output_dir
+Stage 6  Completion          → Report file path, suggest /evolve-claude-md to close the flywheel
+```
+
+**Error handling:**
+
+| Error | What happens | Recovery |
+|-------|-------------|----------|
+| Config file missing | Pipeline stops at Stage 0 | Run `/revolve-setup` to generate config |
+| `yt-dlp` not installed | Pipeline stops at Stage 1 (YouTube mode) | `brew install yt-dlp` or `pip install yt-dlp` |
+| `defuddle` not installed | Pipeline continues with degraded web mode — URL passed directly to NotebookLM | `npm install -g defuddle-cli` (optional) |
+| NotebookLM MCP unavailable | Pipeline stops at Stage 1 | Check MCP server is running; run `nlm login` if auth expired |
+| NotebookLM auth expired | API calls fail with auth error | Run `nlm login` to re-authenticate (opens browser) |
+| Notebook source limit (50) reached | Cannot add more sources to current notebook | Create a new notebook with `--notebook` flag or let pipeline auto-create |
+| `vault_path` directory doesn't exist | Pipeline stops at Stage 5 | Check path in `~/.config/revolve/config.md` |
+| Target note file already exists | Pipeline appends new analysis with `---` separator and timestamp — never overwrites | By design — preserves iteration history |
+| `research_start` timeout | Deep research takes longer than expected | Wait and retry; NotebookLM processing is asynchronous |
+
+**NotebookLM MCP tools used:**
+
+The research pipeline calls these NotebookLM tools through the MCP bridge. You don't need to call them directly — the skill orchestrates them automatically — but understanding the flow helps with debugging.
+
+| Stage | Tool | What it does |
+|-------|------|-------------|
+| 3 | `notebook_create(title)` | Creates a new NotebookLM notebook for this research session |
+| 2-3 | `source_add(source_type, ...)` | Adds a source to the notebook. Types: `youtube` (video URL), `url` (web page), `text` (raw content), `file` (local document) |
+| 3 | `notebook_query(notebook_id, query)` | Quick analysis — asks NotebookLM a question about the sources. Returns in seconds |
+| 3 | `research_start(notebook_id, topic)` | Deep analysis — triggers NotebookLM's thorough research mode. Takes ~5 minutes |
+| 3 | `research_status(notebook_id)` | Polls the status of a deep research job (pending/processing/complete) |
+| 4 | `studio_create(notebook_id, artifact_type)` | Requests a deliverable: `infographic`, `audio`, `slide_deck`, `report`, or `quiz` |
+| 4 | `studio_status(notebook_id)` | Polls deliverable generation progress |
+| 4 | `download_artifact(notebook_id, artifact_type)` | Downloads the completed deliverable |
+
+All tools require the NotebookLM MCP server to be running and authenticated. If any call fails with an auth error, run `nlm login` to refresh credentials.
+
 ---
 
 ### `/evolve-claude-md`
