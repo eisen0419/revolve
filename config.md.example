@@ -1,0 +1,26 @@
+---
+vault_path: /path/to/your/Obsidian/Vault
+output_dir: Research
+screenshots_dir: attachments/screenshots
+sync_providers: claude,codex,opencode,gemini
+---
+
+# Revolve Configuration
+
+This file is the configuration for the Revolve plugin. Copy it to `~/.config/revolve/config.md` and update the values.
+
+Quick setup: run `/revolve-setup` to generate this file automatically.
+
+## Field Reference
+
+- **vault_path** (required): Absolute path to your Obsidian vault root
+- **output_dir** (required): Relative path within vault for research notes (must be under vault_path)
+- **screenshots_dir** (optional): Relative path within vault for screenshot attachments
+- **sync_providers** (optional): Comma-separated list of providers to sync. Options: claude, codex, opencode, gemini. Default: all
+
+## Format Rules
+
+- All values are simple unquoted strings (no YAML quoting)
+- Lists use comma-separated format (e.g., `claude,codex,gemini`)
+- Paths with spaces are fine — parser splits on first `: ` only
+- Do not use multi-line values

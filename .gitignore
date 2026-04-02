@@ -1,0 +1,7 @@
+*.pyc
+__pycache__/
+.context/
+.DS_Store
+*.swp
+*.swo
+*~
