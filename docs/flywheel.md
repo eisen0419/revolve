@@ -1,4 +1,4 @@
-# How the Flywheel Works
+# The Revolve Flywheel
 
 ## The Problem
 
