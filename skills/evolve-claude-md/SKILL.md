@@ -52,6 +52,7 @@ test -f ~/.config/revolve/config.md
 |------|------|
 | `vault_path` | Obsidian vault 根目录（必需） |
 | `output_dir` | vault 内的笔记目录（可选，用于过滤扫描范围） |
+| `claude_md_path` | CLAUDE.md 文件路径（可选，覆盖默认查找逻辑） |
 
 **如果配置文件不存在：** 输出以下提示并退出：
 
@@ -60,13 +61,19 @@ test -f ~/.config/revolve/config.md
 Run /revolve-setup to configure your vault path and other settings.
 ```
 
+**确定 CLAUDE.md 路径（按优先级）：**
+1. 若 config 中有 `claude_md_path` 字段，直接使用该路径
+2. 否则，检查当前项目根目录是否有 `CLAUDE.md`
+3. 否则，使用 `~/.claude/CLAUDE.md`
+4. 若以上路径均不存在，用 AskUserQuestion 询问："Where is your CLAUDE.md?"
+
 将解析得到的 `vault_path` 用于后续阶段 1B 的扫描。
 
 默认 `--days` 为 7，若用户传入参数则覆盖。
 
 ### 阶段 0.5：幂等性检查
 
-读取目标 CLAUDE.md 文件（通常是 `~/.claude/CLAUDE.md` 或当前项目的 `CLAUDE.md`），检查是否已有今天日期的进化条目：
+读取阶段 0 确定的目标 CLAUDE.md 文件，检查是否已有今天日期的进化条目：
 
 ```python
 import datetime
