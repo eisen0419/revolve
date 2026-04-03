@@ -38,6 +38,8 @@ cat ~/.config/revolve/config.md 2>/dev/null
 从 frontmatter 解析：
 - `vault_path` — Obsidian vault 根目录（必填）
 - `output_dir` — vault 内研究笔记目录（必填）
+- `screenshots_dir` — vault 内截图目录（可选）
+- `notebooklm_enabled` — 是否启用 NotebookLM 集成（可选，默认 `true`）
 
 若文件缺失或 `vault_path` / `output_dir` 为空，输出：
 
@@ -70,11 +72,12 @@ which defuddle || echo "MISSING"
 ```
 若缺失 → 不停止，仅记录降级：将跳过 defuddle 解析，直接用 URL 让 NotebookLM 处理。
 
-**NotebookLM MCP：**
+**NotebookLM MCP（若 `notebooklm_enabled: true`）：**
 在继续之前确认 NotebookLM MCP 工具可用（`notebook_list` 测试调用）。若失败，提示：
 ```
 ❌ NotebookLM MCP 不可用。请确认 MCP 服务已启动，或运行 nlm login 重新认证。
 ```
+若 `notebooklm_enabled: false`，跳过所有 NotebookLM 相关步骤（阶段 3），仅保存本地笔记。
 
 ---
 
@@ -193,6 +196,9 @@ status: complete
 
 - NotebookLM notebook: <notebook_url>
 ```
+
+若研究过程中捕获了截图，且 `screenshots_dir` 已配置，将截图移动至：
+`<vault_path>/<screenshots_dir>/`
 
 ---
 
