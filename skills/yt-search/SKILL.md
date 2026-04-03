@@ -1,73 +1,107 @@
 ---
 name: yt-search
-description: This skill should be used when the user asks to 'search YouTube', 'find YouTube videos', or 'yt-search'. Searches YouTube videos via yt-dlp and returns structured results.
-argument-hint: "<search-query> [result-count]"
+description: This skill should be used when the user asks to 'search YouTube', 'find YouTube videos', 'yt-search', or 'find video transcripts'. Searches YouTube videos via yt-dlp and extracts transcripts for research purposes.
+argument-hint: "<search-query>"
 ---
 
-# YouTube 搜索
+# /yt-search
 
-使用 yt-dlp 搜索 YouTube 视频，返回结构化的视频信息。
+Search YouTube videos and extract transcripts for research purposes.
 
-## 用法
+## Trigger
+
+User runs `/yt-search <query>` or asks to search YouTube / find video transcripts.
+
+## Instructions
+
+### Step 0: Dependency Check
+
+Verify yt-dlp is available:
 
 ```bash
-# 搜索并返回 10 条结果（默认）
-yt-dlp "ytsearch10:<关键词>" --flat-playlist --dump-json 2>/dev/null
-
-# 自定义数量（例如 5 条）
-yt-dlp "ytsearch5:<关键词>" --flat-playlist --dump-json 2>/dev/null
+which yt-dlp
 ```
 
-## 输出格式
+- If missing: inform the user "yt-dlp is required. Install via `pip install yt-dlp` or `brew install yt-dlp`"
+- Abort if dependency is missing — do not proceed.
 
-将 JSON 结果解析为 Markdown 表格：
+### Step 1: Read Config
 
-| 标题 | URL | 时长 | 观看数 | 上传日期 |
-|------|-----|------|--------|----------|
-| 视频标题 | https://youtube.com/watch?v=xxx | 10:30 | 50000 | 20260401 |
+Read `config.md` in the plugin root to get `output_dir`.
 
-关键 JSON 字段：`title`、`url`、`duration_string`、`view_count`、`upload_date`、`channel`、`description`
+- If config.md is missing: inform the user "Run /revolve-setup first to configure Revolve."
+- Default output_dir fallback: `~/Downloads/revolve-research`
 
-## 完整解析命令
+Extract the `output_dir` value from the YAML frontmatter in config.md.
+
+### Step 2: Search YouTube
+
+Use yt-dlp to search YouTube for the query and parse results:
 
 ```bash
-yt-dlp "ytsearch10:<关键词>" --flat-playlist --dump-json 2>/dev/null | python3 -c "
+yt-dlp "ytsearch5:<query>" --flat-playlist --dump-json 2>/dev/null | python3 -c "
 import json, sys
 results = []
 for line in sys.stdin:
     d = json.loads(line)
     results.append({
-        'title': d.get('title',''),
-        'url': d.get('url',''),
-        'duration': d.get('duration_string',''),
-        'views': d.get('view_count',0),
-        'date': d.get('upload_date',''),
-        'channel': d.get('channel','')
+        'title': d.get('title', ''),
+        'url': d.get('url', ''),
+        'duration': d.get('duration_string', ''),
+        'views': d.get('view_count', 0),
+        'date': d.get('upload_date', ''),
+        'channel': d.get('channel', '')
     })
-print('| # | 标题 | 频道 | 时长 | 观看数 | URL |')
-print('|---|------|------|------|--------|-----|')
+print('| # | Title | Channel | Duration | Views | URL |')
+print('|---|-------|---------|----------|-------|-----|')
 for i, r in enumerate(results, 1):
     print(f\"| {i} | {r['title'][:50]} | {r['channel'][:20]} | {r['duration']} | {r['views']:,} | {r['url']} |\")
 "
 ```
 
-## 前置检查
+Present results as a numbered table with title, channel, duration, and URL.
 
-如果 `yt-dlp` 未安装，根据系统提示用户安装：
+### Step 3: Select Video
+
+Ask user to select a video number from the results, or enter a YouTube URL directly.
+
+### Step 4: Extract Transcript
+
+Extract transcript/subtitles using yt-dlp with the output_dir from config:
 
 ```bash
-# macOS
-brew install yt-dlp
-
-# Linux (pip)
-pip install yt-dlp
-
-# Linux (apt)
-sudo apt install yt-dlp
+yt-dlp --write-auto-sub --sub-lang en --skip-download \
+  --output "<output_dir>/%(title)s.%(ext)s" <url>
 ```
 
-## 注意事项
+If no English subtitles are available, try other available languages:
 
-- 仅做搜索和元数据提取，不下载视频
-- 搜索结果数量通过 `ytsearchN` 的 N 控制
-- 可与 `/research-pipeline` 配合使用，将视频 URL 发送到 NotebookLM 进行深度分析
+```bash
+yt-dlp --write-auto-sub --skip-download \
+  --output "<output_dir>/%(title)s.%(ext)s" <url>
+```
+
+### Step 5: Format and Save
+
+Parse the subtitle file (vtt/srt) and format as clean text, stripping timestamps and duplicate lines.
+
+Save to `<output_dir>/yt-<video-id>-transcript.md` with frontmatter:
+
+```markdown
+---
+source: youtube
+url: <video_url>
+title: <video_title>
+date: <today>
+---
+
+<transcript text>
+```
+
+Report the saved file path to the user.
+
+## Notes
+
+- Search results come from yt-dlp's `ytsearch` prefix; adjust N in `ytsearchN` for more results
+- Can be used with `/research-pipeline` — pass the saved transcript file path for further analysis
+- Only downloads subtitles, never full video files
