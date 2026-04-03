@@ -1,31 +1,8 @@
 {
-  "name": "revolve",
-  "owner": {
-    "name": "Eisen",
-    "url": "https://github.com/eisen0419"
-  },
-  "metadata": {
-    "description": "Self-evolving AI research architecture for Claude Code",
-    "version": "1.0.0"
-  },
-  "plugins": [
-    {
-      "name": "revolve",
-      "description": "Research topics via NotebookLM, store in Obsidian, evolve CLAUDE.md from accumulated experience. Includes research pipeline, evolution, YouTube search, and setup wizard.",
-      "author": {
-        "name": "Eisen",
-        "url": "https://github.com/eisen0419"
-      },
-      "homepage": "https://github.com/eisen0419/revolve",
-      "tags": [
-        "research",
-        "self-evolving",
-        "notebooklm",
-        "obsidian",
-        "youtube",
-        "knowledge-management"
-      ],
-      "source": "."
-    }
-  ]
+  "slug": "revolve",
+  "category": "productivity",
+  "tags": ["research", "knowledge-management", "obsidian", "ai-evolution"],
+  "homepage": "",
+  "repository": "",
+  "screenshots": []
 }

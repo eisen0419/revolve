@@ -1,7 +1,25 @@
-*.pyc
+# User config (contains personal paths)
+config.md
+
+# Python
 __pycache__/
-.context/
+*.py[cod]
+.venv/
+venv/
+
+# macOS
 .DS_Store
+
+# Logs
+*.log
+logs/
+
+# Editor
+.vscode/
+.idea/
+
+# Misc
 *.swp
 *.swo
 *~
+.context/
