@@ -16,12 +16,32 @@ Markdown file with YAML frontmatter. All values are simple unquoted strings — 
 
 ## Field Schema
 
-| Field | Type | Required | Default | Consumers | Description |
-|-------|------|----------|---------|-----------|-------------|
-| `vault_path` | string (absolute path) | yes | — | all skills, sync script | Absolute path to Obsidian vault root |
-| `output_dir` | string (relative path) | yes | `Research` | research-pipeline, evolve-claude-md | Relative path within vault for research notes. Must be under `vault_path` |
-| `screenshots_dir` | string (relative path) | no | `attachments/screenshots` | research-pipeline | Relative path within vault for screenshot attachments |
-| `sync_providers` | string (comma-separated) | no | `claude,codex,opencode,gemini` | sync script | Comma-separated list of enabled providers |
+### Required Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `vault_path` | string (absolute path) | Absolute path to Obsidian vault root |
+| `output_dir` | string (relative path) | Relative path within vault for research notes. Must be under `vault_path` |
+
+### Optional Fields
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `screenshots_dir` | string (relative path) | `attachments/screenshots` | Relative path within vault for screenshot attachments |
+| `sync_providers` | string (comma-separated) | `claude,codex,opencode,gemini` | Comma-separated list of enabled providers: `claude`, `gemini`, `chatgpt`, `codex` |
+| `default_language` | string | `en` | Output language for generated content: `en` or `cn` |
+| `notebooklm_enabled` | bool | `true` | Enable automatic NotebookLM import for research notes |
+
+## Consumers
+
+| Field | Consumers |
+|-------|-----------|
+| `vault_path` | all skills, sync script |
+| `output_dir` | research-pipeline, evolve-claude-md |
+| `screenshots_dir` | research-pipeline |
+| `sync_providers` | sync script |
+| `default_language` | research-pipeline, research-note template |
+| `notebooklm_enabled` | research-pipeline |
 
 ## Constraints
 
@@ -34,6 +54,12 @@ Markdown file with YAML frontmatter. All values are simple unquoted strings — 
 **Skills (inside Claude Code):** Read at execution time via `Read ~/.config/revolve/config.md`. Parse frontmatter values from the YAML block between `---` markers. No Claude Code restart needed after config changes.
 
 **Sync script (Python):** Parse with regex — split lines on first `: `, strip whitespace. For `sync_providers`, split on `,` to get a list.
+
+## Skill Responsibilities
+
+- Every skill MUST check for `~/.config/revolve/config.md` existence at startup
+- If config.md is missing, skills MUST prompt user to run `/revolve-setup`
+- Skills MUST NOT hardcode any user-specific paths
 
 ## Missing Config Behavior
 
