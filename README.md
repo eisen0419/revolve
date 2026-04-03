@@ -200,6 +200,10 @@ claude mcp add notebooklm-mcp
 
 </div>
 
+## Demo
+
+> Coming soon — a video walkthrough showing the full research-to-evolution flywheel in action.
+
 ## Quick Start
 
 **Step 1: Configure vault path and check dependencies**

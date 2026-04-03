@@ -96,6 +96,10 @@ claude plugin install revolve
 
 </div>
 
+## 演示
+
+> 即将推出 — 完整研究到进化飞轮流程的视频演示。
+
 ## 快速开始
 
 ```bash
@@ -122,12 +126,12 @@ claude plugin install revolve
 
 ## Skill 参考
 
-| Skill | 说明 | 示例 |
-|-------|------|------|
-| `/revolve-setup` | 交互式向导——配置 vault、检查依赖 | `/revolve-setup` |
-| `/yt-search` | 通过 yt-dlp 搜索 YouTube | `/yt-search "Claude Code skills"` |
+| Skill                | 说明                                  | 示例                                       |
+| -------------------- | ----------------------------------- | ---------------------------------------- |
+| `/revolve-setup`     | 交互式向导——配置 vault、检查依赖                | `/revolve-setup`                         |
+| `/yt-search`         | 通过 yt-dlp 搜索 YouTube                | `/yt-search "Claude Code skills"`        |
 | `/research-pipeline` | 采集 → NotebookLM 分析 → 写入 Obsidian 笔记 | `/research-pipeline youtube "AI agents"` |
-| `/evolve-claude-md` | 扫描对话和笔记，将发现追加至 CLAUDE.md | `/evolve-claude-md --days 7` |
+| `/evolve-claude-md`  | 扫描对话和笔记，将发现追加至 CLAUDE.md            | `/evolve-claude-md --days 7`             |
 
 <div align="right">
 
