@@ -1,21 +1,14 @@
 {
   "name": "revolve",
   "version": "0.1.0",
-  "description": "Self-evolving AI research architecture. Research topics via NotebookLM, store in Obsidian, evolve CLAUDE.md from accumulated experience.",
-  "author": {
-    "name": "Eisen",
-    "url": "https://github.com/eisen0419"
-  },
-  "homepage": "https://github.com/eisen0419/revolve",
-  "repository": "https://github.com/eisen0419/revolve",
+  "description": "A self-reinforcing flywheel for AI research and evolution",
+  "author": "",
   "license": "MIT",
-  "keywords": [
-    "research",
-    "self-evolving",
-    "notebooklm",
-    "obsidian",
-    "youtube",
-    "knowledge-management",
-    "ai-productivity"
-  ]
+  "skills": [
+    "skills/revolve-setup/SKILL.md",
+    "skills/research-pipeline/SKILL.md",
+    "skills/evolve-claude-md/SKILL.md",
+    "skills/yt-search/SKILL.md"
+  ],
+  "min_claude_code_version": "1.0.0"
 }
