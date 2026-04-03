@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Revolve Conversation Sync — macOS launchd agent
      Install:
-       cp com.revolve.sync.plist ~/Library/LaunchAgents/
-       launchctl load ~/Library/LaunchAgents/com.revolve.sync.plist
+       1. Update ALL /Users/YOUR_USERNAME paths below to your actual paths
+       2. cp com.revolve.sync.plist ~/Library/LaunchAgents/
+       3. launchctl load ~/Library/LaunchAgents/com.revolve.sync.plist
      Uninstall:
        launchctl unload ~/Library/LaunchAgents/com.revolve.sync.plist
        rm ~/Library/LaunchAgents/com.revolve.sync.plist
      NOTE: launchd does NOT expand ~ or $HOME in paths.
-           Update ProgramArguments[1] to your actual script path. -->
+           Replace /Users/YOUR_USERNAME with your actual home directory. -->
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
   "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -18,7 +19,7 @@
     <key>ProgramArguments</key>
     <array>
         <string>/usr/bin/python3</string>
-        <string>/Users/happy/projects/revolve/scripts/sync_conversations.py</string>
+        <string>/Users/YOUR_USERNAME/projects/revolve/scripts/sync_conversations.py</string>
         <string>--once</string>
         <string>--verbose</string>
     </array>
@@ -30,15 +31,15 @@
     <integer>300</integer>
 
     <key>StandardOutPath</key>
-    <string>/Users/happy/.config/revolve/sync.log</string>
+    <string>/Users/YOUR_USERNAME/.config/revolve/sync.log</string>
 
     <key>StandardErrorPath</key>
-    <string>/Users/happy/.config/revolve/sync.log</string>
+    <string>/Users/YOUR_USERNAME/.config/revolve/sync.log</string>
 
     <key>EnvironmentVariables</key>
     <dict>
         <key>HOME</key>
-        <string>/Users/happy</string>
+        <string>/Users/YOUR_USERNAME</string>
     </dict>
 </dict>
 </plist>
