@@ -23,3 +23,6 @@ logs/
 *.swo
 *~
 .context/
+
+# Personal todos — not for open source
+tasks/
